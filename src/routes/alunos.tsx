@@ -146,14 +146,14 @@ function Alunos() {
               <NeuInput
                 type="number"
                 value={String(form.propina ?? 0)}
-                onChange={(e) => setForm({ ...form, propina: e.target.value })}
+                onChange={(e) => setForm({ ...form, propina: Number(e.target.value) })}
               />
             </Campo>
             <Campo label="Valor pago (Kz)">
               <NeuInput
                 type="number"
                 value={String(form.valor_pago ?? 0)}
-                onChange={(e) => setForm({ ...form, valor_pago: e.target.value })}
+                onChange={(e) => setForm({ ...form, valor_pago: Number(e.target.value) })}
               />
             </Campo>
             <Campo label="Estado">
