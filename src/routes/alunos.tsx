@@ -32,7 +32,9 @@ export const Route = createFileRoute("/alunos")({
   component: Alunos,
 });
 
-const vazio = {
+type FormAluno = Partial<Aluno>;
+
+const vazio: FormAluno = {
   nome: "",
   telefone: "",
   polo: "Caála",
@@ -47,7 +49,7 @@ function Alunos() {
   const { data: alunos = [], isLoading } = useAlunos();
   const guardar = useGuardar("alunos", ["alunos"]);
   const apagar = useApagar("alunos", ["alunos"]);
-  const [form, setForm] = useState<Record<string, unknown>>(vazio);
+  const [form, setForm] = useState<FormAluno>(vazio);
   const [aberto, setAberto] = useState(false);
   const [filtro, setFiltro] = useState("todos");
   const [busca, setBusca] = useState("");
