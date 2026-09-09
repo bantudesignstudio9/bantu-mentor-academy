@@ -14,7 +14,220 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      alunos: {
+        Row: {
+          created_at: string
+          data_inscricao: string
+          estado: string
+          id: string
+          nome: string
+          observacoes: string | null
+          owner_id: string | null
+          polo: string
+          propina: number
+          telefone: string | null
+          turma: string | null
+          updated_at: string
+          valor_pago: number
+        }
+        Insert: {
+          created_at?: string
+          data_inscricao?: string
+          estado?: string
+          id?: string
+          nome: string
+          observacoes?: string | null
+          owner_id?: string | null
+          polo?: string
+          propina?: number
+          telefone?: string | null
+          turma?: string | null
+          updated_at?: string
+          valor_pago?: number
+        }
+        Update: {
+          created_at?: string
+          data_inscricao?: string
+          estado?: string
+          id?: string
+          nome?: string
+          observacoes?: string | null
+          owner_id?: string | null
+          polo?: string
+          propina?: number
+          telefone?: string | null
+          turma?: string | null
+          updated_at?: string
+          valor_pago?: number
+        }
+        Relationships: []
+      }
+      colaboradores: {
+        Row: {
+          activo: boolean
+          categoria: string
+          created_at: string
+          data_inicio: string | null
+          data_termino: string | null
+          disciplina: string | null
+          id: string
+          nome: string
+          owner_id: string | null
+          polo: string
+          salario_bruto: number
+          telefone: string | null
+          updated_at: string
+        }
+        Insert: {
+          activo?: boolean
+          categoria?: string
+          created_at?: string
+          data_inicio?: string | null
+          data_termino?: string | null
+          disciplina?: string | null
+          id?: string
+          nome: string
+          owner_id?: string | null
+          polo?: string
+          salario_bruto?: number
+          telefone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          activo?: boolean
+          categoria?: string
+          created_at?: string
+          data_inicio?: string | null
+          data_termino?: string | null
+          disciplina?: string | null
+          id?: string
+          nome?: string
+          owner_id?: string | null
+          polo?: string
+          salario_bruto?: number
+          telefone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      financas: {
+        Row: {
+          categoria: string
+          created_at: string
+          data: string
+          descricao: string | null
+          id: string
+          owner_id: string | null
+          tipo: string
+          valor: number
+        }
+        Insert: {
+          categoria?: string
+          created_at?: string
+          data?: string
+          descricao?: string | null
+          id?: string
+          owner_id?: string | null
+          tipo?: string
+          valor?: number
+        }
+        Update: {
+          categoria?: string
+          created_at?: string
+          data?: string
+          descricao?: string | null
+          id?: string
+          owner_id?: string | null
+          tipo?: string
+          valor?: number
+        }
+        Relationships: []
+      }
+      pagamentos: {
+        Row: {
+          bruto: number
+          colaborador_id: string
+          created_at: string
+          data_pagamento: string | null
+          descontos: number
+          id: string
+          liquido: number
+          mes_referencia: string
+          owner_id: string | null
+          pago: boolean
+        }
+        Insert: {
+          bruto?: number
+          colaborador_id: string
+          created_at?: string
+          data_pagamento?: string | null
+          descontos?: number
+          id?: string
+          liquido?: number
+          mes_referencia: string
+          owner_id?: string | null
+          pago?: boolean
+        }
+        Update: {
+          bruto?: number
+          colaborador_id?: string
+          created_at?: string
+          data_pagamento?: string | null
+          descontos?: number
+          id?: string
+          liquido?: number
+          mes_referencia?: string
+          owner_id?: string | null
+          pago?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pagamentos_colaborador_id_fkey"
+            columns: ["colaborador_id"]
+            isOneToOne: false
+            referencedRelation: "colaboradores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      presencas: {
+        Row: {
+          colaborador_id: string
+          created_at: string
+          data: string
+          estado: string
+          id: string
+          observacao: string | null
+          owner_id: string | null
+        }
+        Insert: {
+          colaborador_id: string
+          created_at?: string
+          data: string
+          estado?: string
+          id?: string
+          observacao?: string | null
+          owner_id?: string | null
+        }
+        Update: {
+          colaborador_id?: string
+          created_at?: string
+          data?: string
+          estado?: string
+          id?: string
+          observacao?: string | null
+          owner_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "presencas_colaborador_id_fkey"
+            columns: ["colaborador_id"]
+            isOneToOne: false
+            referencedRelation: "colaboradores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
