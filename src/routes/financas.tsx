@@ -40,7 +40,7 @@ export const Route = createFileRoute("/financas")({
       { property: "og:description", content: "Controlo financeiro mensal do programa." },
     ],
   }),
-  component: Financas;
+  component: Financas,
 });
 
 const CATEGORIAS = [
