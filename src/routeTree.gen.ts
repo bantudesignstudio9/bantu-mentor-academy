@@ -12,6 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AlunosRouteImport } from './routes/alunos'
 import { Route as ColaboradoresRouteImport } from './routes/colaboradores'
+import { Route as FinancasRouteImport } from './routes/financas'
+import { Route as PagamentosRouteImport } from './routes/pagamentos'
+import { Route as PresencasRouteImport } from './routes/presencas'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +31,81 @@ const ColaboradoresRoute = ColaboradoresRouteImport.update({
   path: '/colaboradores',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FinancasRoute = FinancasRouteImport.update({
+  id: '/financas',
+  path: '/financas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PagamentosRoute = PagamentosRouteImport.update({
+  id: '/pagamentos',
+  path: '/pagamentos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PresencasRoute = PresencasRouteImport.update({
+  id: '/presencas',
+  path: '/presencas',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/alunos': typeof AlunosRoute
   '/colaboradores': typeof ColaboradoresRoute
+  '/financas': typeof FinancasRoute
+  '/pagamentos': typeof PagamentosRoute
+  '/presencas': typeof PresencasRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/alunos': typeof AlunosRoute
   '/colaboradores': typeof ColaboradoresRoute
+  '/financas': typeof FinancasRoute
+  '/pagamentos': typeof PagamentosRoute
+  '/presencas': typeof PresencasRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/alunos': typeof AlunosRoute
   '/colaboradores': typeof ColaboradoresRoute
+  '/financas': typeof FinancasRoute
+  '/pagamentos': typeof PagamentosRoute
+  '/presencas': typeof PresencasRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/alunos' | '/colaboradores'
+  fullPaths:
+    | '/'
+    | '/alunos'
+    | '/colaboradores'
+    | '/financas'
+    | '/pagamentos'
+    | '/presencas'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/alunos' | '/colaboradores'
-  id: '__root__' | '/' | '/alunos' | '/colaboradores'
+  to:
+    | '/'
+    | '/alunos'
+    | '/colaboradores'
+    | '/financas'
+    | '/pagamentos'
+    | '/presencas'
+  id:
+    | '__root__'
+    | '/'
+    | '/alunos'
+    | '/colaboradores'
+    | '/financas'
+    | '/pagamentos'
+    | '/presencas'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AlunosRoute: typeof AlunosRoute
   ColaboradoresRoute: typeof ColaboradoresRoute
+  FinancasRoute: typeof FinancasRoute
+  PagamentosRoute: typeof PagamentosRoute
+  PresencasRoute: typeof PresencasRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +131,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ColaboradoresRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/financas': {
+      id: '/financas'
+      path: '/financas'
+      fullPath: '/financas'
+      preLoaderRoute: typeof FinancasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pagamentos': {
+      id: '/pagamentos'
+      path: '/pagamentos'
+      fullPath: '/pagamentos'
+      preLoaderRoute: typeof PagamentosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/presencas': {
+      id: '/presencas'
+      path: '/presencas'
+      fullPath: '/presencas'
+      preLoaderRoute: typeof PresencasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +159,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AlunosRoute: AlunosRoute,
   ColaboradoresRoute: ColaboradoresRoute,
+  FinancasRoute: FinancasRoute,
+  PagamentosRoute: PagamentosRoute,
+  PresencasRoute: PresencasRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
