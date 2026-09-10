@@ -1,14 +1,16 @@
-# Welcome to your Lovable project
+# Bantu Mentor Academy
+
+eta é uma planilha/livro que utilizei há 3 anos para a gestão e controlo de um programa de formação que dirigi, ajudou-me no controlo financeiro principalmente, presençãs assiduidade dos colaboradores e registo dos alunos. quero criar um sistema baseado nela mas, mais moderno e aprimorado, e com mais funcionalidades. mas já não será Walinga, mas sim, Bantu Mentor Academy - logo em anexo - mesmo a paleta de cores deve corresponder. a UI deve ser uma mistura de skeuomorphism + neuomorphism
 
 This project was built with [Lovable](https://lovable.dev).
 
 ## Build with Lovable
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/90068116-d012-4d59-9686-7171a1cc4296).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
@@ -20,10 +22,3 @@ cd <repository-name>
 npm i
 npm run dev
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
