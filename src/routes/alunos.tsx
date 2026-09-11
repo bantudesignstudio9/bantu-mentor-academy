@@ -64,13 +64,25 @@ function Alunos() {
   const [form, setForm] = useState<FormAluno>(vazio);
   const [aberto, setAberto] = useState(false);
   const [filtro, setFiltro] = useState("todos");
+  const [filtroPrograma, setFiltroPrograma] = useState("todos");
   const [busca, setBusca] = useState("");
 
   const lista = alunos.filter(
     (a) =>
       (filtro === "todos" || a.polo === filtro) &&
+      (filtroPrograma === "todos" || a.programa_id === filtroPrograma) &&
       a.nome.toLowerCase().includes(busca.toLowerCase()),
   );
+
+  const cursosDoPrograma = cursos.filter(
+    (c) => c.activo && c.programa_id === (form.programa_id ?? ""),
+  );
+  const niveis = [...new Set(cursosDoPrograma.map((c) => c.nivel).filter(Boolean))] as string[];
+  const cursosVisiveis = form.nivel
+    ? cursosDoPrograma.filter((c) => c.nivel === form.nivel)
+    : cursosDoPrograma;
+  const nomePrograma = (id: string | null) => programas.find((p) => p.id === id)?.nome ?? "—";
+  const nomeCurso = (id: string | null) => cursos.find((c) => c.id === id)?.nome ?? null;
 
   const editar = (a: Aluno) => {
     setForm({ ...a });
