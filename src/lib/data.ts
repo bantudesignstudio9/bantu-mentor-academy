@@ -12,6 +12,28 @@ export type Aluno = {
   valor_pago: number;
   estado: string;
   observacoes: string | null;
+  programa_id: string | null;
+  curso_id: string | null;
+  nivel: string | null;
+};
+
+export type Programa = {
+  id: string;
+  nome: string;
+  descricao: string | null;
+  cor: string;
+  activo: boolean;
+  ordem: number;
+};
+
+export type Curso = {
+  id: string;
+  programa_id: string;
+  nome: string;
+  nivel: string | null;
+  propina_padrao: number;
+  activo: boolean;
+  ordem: number;
 };
 
 export type Colaborador = {
@@ -81,6 +103,12 @@ export const usePagamentos = () =>
     queryKey: ["pagamentos"],
     queryFn: () => listar<Pagamento>("pagamentos", "mes_referencia", false),
   });
+
+export const useProgramas = () =>
+  useQuery({ queryKey: ["programas"], queryFn: () => listar<Programa>("programas", "ordem") });
+
+export const useCursos = () =>
+  useQuery({ queryKey: ["cursos"], queryFn: () => listar<Curso>("cursos", "ordem") });
 
 export const useFinancas = () =>
   useQuery({ queryKey: ["financas"], queryFn: () => listar<Financa>("financas", "data", false) });
