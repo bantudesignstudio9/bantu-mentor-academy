@@ -7,11 +7,13 @@ import {
   CalendarCheck,
   Wallet,
   PiggyBank,
+  BookOpen,
 } from "lucide-react";
 import logo from "@/assets/bma-logo.png.asset.json";
 
 const links = [
   { to: "/", label: "Painel", icon: LayoutDashboard },
+  { to: "/programas", label: "Programas", icon: BookOpen },
   { to: "/alunos", label: "Alunos", icon: GraduationCap },
   { to: "/colaboradores", label: "Colaboradores", icon: Users },
   { to: "/presencas", label: "Presenças", icon: CalendarCheck },
