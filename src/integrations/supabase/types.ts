@@ -17,13 +17,16 @@ export type Database = {
       alunos: {
         Row: {
           created_at: string
+          curso_id: string | null
           data_inscricao: string
           estado: string
           id: string
+          nivel: string | null
           nome: string
           observacoes: string | null
           owner_id: string | null
           polo: string
+          programa_id: string | null
           propina: number
           telefone: string | null
           turma: string | null
@@ -32,13 +35,16 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          curso_id?: string | null
           data_inscricao?: string
           estado?: string
           id?: string
+          nivel?: string | null
           nome: string
           observacoes?: string | null
           owner_id?: string | null
           polo?: string
+          programa_id?: string | null
           propina?: number
           telefone?: string | null
           turma?: string | null
@@ -47,20 +53,38 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          curso_id?: string | null
           data_inscricao?: string
           estado?: string
           id?: string
+          nivel?: string | null
           nome?: string
           observacoes?: string | null
           owner_id?: string | null
           polo?: string
+          programa_id?: string | null
           propina?: number
           telefone?: string | null
           turma?: string | null
           updated_at?: string
           valor_pago?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "alunos_curso_id_fkey"
+            columns: ["curso_id"]
+            isOneToOne: false
+            referencedRelation: "cursos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "alunos_programa_id_fkey"
+            columns: ["programa_id"]
+            isOneToOne: false
+            referencedRelation: "programas"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       colaboradores: {
         Row: {
@@ -109,6 +133,53 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      cursos: {
+        Row: {
+          activo: boolean
+          created_at: string
+          id: string
+          nivel: string | null
+          nome: string
+          ordem: number
+          owner_id: string | null
+          programa_id: string
+          propina_padrao: number
+          updated_at: string
+        }
+        Insert: {
+          activo?: boolean
+          created_at?: string
+          id?: string
+          nivel?: string | null
+          nome: string
+          ordem?: number
+          owner_id?: string | null
+          programa_id: string
+          propina_padrao?: number
+          updated_at?: string
+        }
+        Update: {
+          activo?: boolean
+          created_at?: string
+          id?: string
+          nivel?: string | null
+          nome?: string
+          ordem?: number
+          owner_id?: string | null
+          programa_id?: string
+          propina_padrao?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cursos_programa_id_fkey"
+            columns: ["programa_id"]
+            isOneToOne: false
+            referencedRelation: "programas"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       financas: {
         Row: {
@@ -227,6 +298,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      programas: {
+        Row: {
+          activo: boolean
+          cor: string
+          created_at: string
+          descricao: string | null
+          id: string
+          nome: string
+          ordem: number
+          owner_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          activo?: boolean
+          cor?: string
+          created_at?: string
+          descricao?: string | null
+          id?: string
+          nome: string
+          ordem?: number
+          owner_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          activo?: boolean
+          cor?: string
+          created_at?: string
+          descricao?: string | null
+          id?: string
+          nome?: string
+          ordem?: number
+          owner_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
       }
     }
     Views: {
