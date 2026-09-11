@@ -15,6 +15,7 @@ import { Route as ColaboradoresRouteImport } from './routes/colaboradores'
 import { Route as FinancasRouteImport } from './routes/financas'
 import { Route as PagamentosRouteImport } from './routes/pagamentos'
 import { Route as PresencasRouteImport } from './routes/presencas'
+import { Route as ProgramasRouteImport } from './routes/programas'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +47,11 @@ const PresencasRoute = PresencasRouteImport.update({
   path: '/presencas',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProgramasRoute = ProgramasRouteImport.update({
+  id: '/programas',
+  path: '/programas',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/financas': typeof FinancasRoute
   '/pagamentos': typeof PagamentosRoute
   '/presencas': typeof PresencasRoute
+  '/programas': typeof ProgramasRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/financas': typeof FinancasRoute
   '/pagamentos': typeof PagamentosRoute
   '/presencas': typeof PresencasRoute
+  '/programas': typeof ProgramasRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,6 +79,7 @@ export interface FileRoutesById {
   '/financas': typeof FinancasRoute
   '/pagamentos': typeof PagamentosRoute
   '/presencas': typeof PresencasRoute
+  '/programas': typeof ProgramasRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -81,6 +90,7 @@ export interface FileRouteTypes {
     | '/financas'
     | '/pagamentos'
     | '/presencas'
+    | '/programas'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -89,6 +99,7 @@ export interface FileRouteTypes {
     | '/financas'
     | '/pagamentos'
     | '/presencas'
+    | '/programas'
   id:
     | '__root__'
     | '/'
@@ -97,6 +108,7 @@ export interface FileRouteTypes {
     | '/financas'
     | '/pagamentos'
     | '/presencas'
+    | '/programas'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -106,6 +118,7 @@ export interface RootRouteChildren {
   FinancasRoute: typeof FinancasRoute
   PagamentosRoute: typeof PagamentosRoute
   PresencasRoute: typeof PresencasRoute
+  ProgramasRoute: typeof ProgramasRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -152,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PresencasRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/programas': {
+      id: '/programas'
+      path: '/programas'
+      fullPath: '/programas'
+      preLoaderRoute: typeof ProgramasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -162,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   FinancasRoute: FinancasRoute,
   PagamentosRoute: PagamentosRoute,
   PresencasRoute: PresencasRoute,
+  ProgramasRoute: ProgramasRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

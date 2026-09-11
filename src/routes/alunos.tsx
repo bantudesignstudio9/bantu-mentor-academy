@@ -14,7 +14,14 @@ import {
   PageHeader,
   Tabela,
 } from "@/components/neu";
-import { useAlunos, useApagar, useGuardar, type Aluno } from "@/lib/data";
+import {
+  useAlunos,
+  useApagar,
+  useCursos,
+  useGuardar,
+  useProgramas,
+  type Aluno,
+} from "@/lib/data";
 import { POLOS, dataCurta, hoje, kz } from "@/lib/format";
 
 export const Route = createFileRoute("/alunos")({
@@ -43,10 +50,15 @@ const vazio: FormAluno = {
   propina: 0,
   valor_pago: 0,
   estado: "activo",
+  programa_id: null,
+  curso_id: null,
+  nivel: null,
 };
 
 function Alunos() {
   const { data: alunos = [], isLoading } = useAlunos();
+  const { data: programas = [] } = useProgramas();
+  const { data: cursos = [] } = useCursos();
   const guardar = useGuardar("alunos", ["alunos"]);
   const apagar = useApagar("alunos", ["alunos"]);
   const [form, setForm] = useState<FormAluno>(vazio);
