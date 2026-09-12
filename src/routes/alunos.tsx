@@ -159,6 +159,70 @@ function Alunos() {
                 onChange={(e) => setForm({ ...form, turma: e.target.value })}
               />
             </Campo>
+            <Campo label="Programa">
+              <NeuSelect
+                value={String(form.programa_id ?? "")}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    programa_id: e.target.value || null,
+                    curso_id: null,
+                    nivel: null,
+                  })
+                }
+              >
+                <option value="">Sem programa</option>
+                {programas
+                  .filter((p) => p.activo)
+                  .map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.nome}
+                    </option>
+                  ))}
+              </NeuSelect>
+            </Campo>
+            {niveis.length > 0 && (
+              <Campo label="Nível">
+                <NeuSelect
+                  value={String(form.nivel ?? "")}
+                  onChange={(e) =>
+                    setForm({ ...form, nivel: e.target.value || null, curso_id: null })
+                  }
+                >
+                  <option value="">Todos os níveis</option>
+                  {niveis.map((n) => (
+                    <option key={n} value={n}>
+                      {n}
+                    </option>
+                  ))}
+                </NeuSelect>
+              </Campo>
+            )}
+            <Campo label="Curso / disciplina">
+              <NeuSelect
+                value={String(form.curso_id ?? "")}
+                onChange={(e) => {
+                  const curso = cursos.find((c) => c.id === e.target.value);
+                  setForm({
+                    ...form,
+                    curso_id: e.target.value || null,
+                    nivel: curso?.nivel ?? form.nivel ?? null,
+                    propina:
+                      curso && Number(curso.propina_padrao) > 0
+                        ? Number(curso.propina_padrao)
+                        : Number(form.propina ?? 0),
+                  });
+                }}
+              >
+                <option value="">Sem curso</option>
+                {cursosVisiveis.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.nome}
+                    {c.nivel ? ` — ${c.nivel}` : ""}
+                  </option>
+                ))}
+              </NeuSelect>
+            </Campo>
             <Campo label="Data de inscrição">
               <NeuInput
                 type="date"
@@ -215,17 +279,43 @@ function Alunos() {
             ))}
           </NeuSelect>
         </Campo>
+        <Campo label="Programa">
+          <NeuSelect value={filtroPrograma} onChange={(e) => setFiltroPrograma(e.target.value)}>
+            <option value="todos">Todos</option>
+            {programas.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.nome}
+              </option>
+            ))}
+          </NeuSelect>
+        </Campo>
         <Etiqueta>{lista.length} aluno(s)</Etiqueta>
       </NeuCard>
 
       <Tabela
-        cabecalho={["Nome", "Polo", "Turma", "Inscrição", "Propina", "Pago", "Estado", ""]}
+        cabecalho={[
+          "Nome",
+          "Programa",
+          "Curso",
+          "Polo",
+          "Turma",
+          "Inscrição",
+          "Propina",
+          "Pago",
+          "Estado",
+          "",
+        ]}
       >
         {lista.map((a) => {
           const divida = Number(a.propina) - Number(a.valor_pago);
           return (
             <Linha key={a.id}>
               <td className="px-3 py-3 font-semibold">{a.nome}</td>
+              <td className="px-3 py-3">{nomePrograma(a.programa_id)}</td>
+              <td className="px-3 py-3">
+                {nomeCurso(a.curso_id) || "—"}
+                {a.nivel ? <span className="block text-xs text-muted-foreground">{a.nivel}</span> : null}
+              </td>
               <td className="px-3 py-3">{a.polo}</td>
               <td className="px-3 py-3">{a.turma || "—"}</td>
               <td className="px-3 py-3">{dataCurta(a.data_inscricao)}</td>
@@ -257,7 +347,7 @@ function Alunos() {
         })}
         {!lista.length && !isLoading && (
           <Linha>
-            <td colSpan={8} className="px-3 py-6 text-center text-muted-foreground">
+            <td colSpan={10} className="px-3 py-6 text-center text-muted-foreground">
               Sem alunos registados.
             </td>
           </Linha>
