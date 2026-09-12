@@ -347,7 +347,7 @@ function Alunos() {
         })}
         {!lista.length && !isLoading && (
           <Linha>
-            <td colSpan={8} className="px-3 py-6 text-center text-muted-foreground">
+            <td colSpan={10} className="px-3 py-6 text-center text-muted-foreground">
               Sem alunos registados.
             </td>
           </Linha>
