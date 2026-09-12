@@ -56,20 +56,35 @@ function Financas() {
   const { data: financas = [] } = useFinancas();
   const { data: alunos = [] } = useAlunos();
   const { data: pagamentos = [] } = usePagamentos();
-  const guardar = useGuardar("financas", ["financas"]);
-  const apagar = useApagar("financas", ["financas"]);
+  const guardar = useGuardar("financas", ["financas", "alunos"]);
+  const apagar = useApagar("financas", ["financas", "alunos"]);
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<{
+    data: string;
+    tipo: string;
+    categoria: string;
+    descricao: string;
+    valor: number;
+    aluno_id: string | null;
+  }>({
     data: hoje(),
     tipo: "despesa",
     categoria: "material",
     descricao: "",
     valor: 0,
+    aluno_id: null,
   });
+
+  const ehPropina = form.categoria === "propinas";
+  const alunoSel = alunos.find((a) => a.id === form.aluno_id) ?? null;
+  const totalAluno = Number(alunoSel?.propina ?? 0);
+  const pagoAluno = Number(alunoSel?.valor_pago ?? 0);
+  const faltaAluno = Math.max(totalAluno - pagoAluno, 0);
+  const nomeAluno = (id: string | null) => alunos.find((a) => a.id === id)?.nome ?? null;
 
   const receitasAlunos = alunos.reduce((s, a) => s + Number(a.valor_pago), 0);
   const receitas = financas
-    .filter((f) => f.tipo === "receita")
+    .filter((f) => f.tipo === "receita" && f.categoria !== "propinas")
     .reduce((s, f) => s + Number(f.valor), 0);
   const despesas = financas
     .filter((f) => f.tipo === "despesa")
