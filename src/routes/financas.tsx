@@ -255,11 +255,50 @@ function Financas() {
             </NeuButton>
           </div>
         </form>
+
+        {ehPropina && alunoSel ? (
+          <div className="neu-inset mt-4 grid gap-3 rounded-2xl p-4 sm:grid-cols-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Aluno
+              </p>
+              <p className="mt-1 font-semibold">{alunoSel.nome}</p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Propina total
+              </p>
+              <p className="mt-1 font-semibold">{kz(totalAluno)}</p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Já pago
+              </p>
+              <p className="mt-1 font-semibold">{kz(pagoAluno)}</p>
+            </div>
+            <div className="flex flex-col items-start gap-2">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Em falta
+              </p>
+              <Etiqueta tom={faltaAluno > 0 ? "erro" : "ok"}>{kz(faltaAluno)}</Etiqueta>
+              {faltaAluno > 0 ? (
+                <NeuButton
+                  type="button"
+                  className="px-3 py-1.5"
+                  onClick={() => setForm({ ...form, valor: faltaAluno })}
+                >
+                  Usar valor em falta
+                </NeuButton>
+              ) : null}
+            </div>
+          </div>
+        ) : null}
       </NeuCard>
 
-      <Tabela cabecalho={["Data", "Tipo", "Categoria", "Descrição", "Valor", ""]}>
+      <Tabela cabecalho={["Data", "Tipo", "Categoria", "Aluno", "Descrição", "Valor", ""]}>
         {financas.map((f) => (
           <Linha key={f.id}>
+            <td className="px-3 py-3">{nomeAluno(f.aluno_id) ?? "—"}</td>
             <td className="px-3 py-3">{dataCurta(f.data)}</td>
             <td className="px-3 py-3">
               <Etiqueta tom={f.tipo === "receita" ? "ok" : "erro"}>{f.tipo}</Etiqueta>
