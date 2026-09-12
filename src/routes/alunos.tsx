@@ -159,6 +159,70 @@ function Alunos() {
                 onChange={(e) => setForm({ ...form, turma: e.target.value })}
               />
             </Campo>
+            <Campo label="Programa">
+              <NeuSelect
+                value={String(form.programa_id ?? "")}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    programa_id: e.target.value || null,
+                    curso_id: null,
+                    nivel: null,
+                  })
+                }
+              >
+                <option value="">Sem programa</option>
+                {programas
+                  .filter((p) => p.activo)
+                  .map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.nome}
+                    </option>
+                  ))}
+              </NeuSelect>
+            </Campo>
+            {niveis.length > 0 && (
+              <Campo label="Nível">
+                <NeuSelect
+                  value={String(form.nivel ?? "")}
+                  onChange={(e) =>
+                    setForm({ ...form, nivel: e.target.value || null, curso_id: null })
+                  }
+                >
+                  <option value="">Todos os níveis</option>
+                  {niveis.map((n) => (
+                    <option key={n} value={n}>
+                      {n}
+                    </option>
+                  ))}
+                </NeuSelect>
+              </Campo>
+            )}
+            <Campo label="Curso / disciplina">
+              <NeuSelect
+                value={String(form.curso_id ?? "")}
+                onChange={(e) => {
+                  const curso = cursos.find((c) => c.id === e.target.value);
+                  setForm({
+                    ...form,
+                    curso_id: e.target.value || null,
+                    nivel: curso?.nivel ?? form.nivel ?? null,
+                    propina:
+                      curso && Number(curso.propina_padrao) > 0
+                        ? Number(curso.propina_padrao)
+                        : form.propina,
+                  });
+                }}
+              >
+                <option value="">Sem curso</option>
+                {cursosVisiveis.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.nome}
+                    {c.nivel ? ` — ${c.nivel}` : ""}
+                  </option>
+                ))}
+              </NeuSelect>
+            </Campo>
             <Campo label="Data de inscrição">
               <NeuInput
                 type="date"
