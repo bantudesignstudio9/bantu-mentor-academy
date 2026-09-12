@@ -106,11 +106,20 @@ function Financas() {
 
   const submeter = (e: React.FormEvent) => {
     e.preventDefault();
+    if (ehPropina && !form.aluno_id) {
+      toast.error("Escolha o aluno da propina");
+      return;
+    }
     guardar.mutate(
-      { ...form, valor: Number(form.valor) || 0 },
+      {
+        ...form,
+        tipo: ehPropina ? "receita" : form.tipo,
+        valor: Number(form.valor) || 0,
+        aluno_id: ehPropina ? form.aluno_id : null,
+      },
       {
         onSuccess: () => {
-          toast.success("Movimento registado");
+          toast.success(ehPropina ? "Propina registada" : "Movimento registado");
           setForm({ ...form, descricao: "", valor: 0 });
         },
         onError: (err: Error) => toast.error(err.message),
