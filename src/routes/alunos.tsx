@@ -279,17 +279,43 @@ function Alunos() {
             ))}
           </NeuSelect>
         </Campo>
+        <Campo label="Programa">
+          <NeuSelect value={filtroPrograma} onChange={(e) => setFiltroPrograma(e.target.value)}>
+            <option value="todos">Todos</option>
+            {programas.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.nome}
+              </option>
+            ))}
+          </NeuSelect>
+        </Campo>
         <Etiqueta>{lista.length} aluno(s)</Etiqueta>
       </NeuCard>
 
       <Tabela
-        cabecalho={["Nome", "Polo", "Turma", "Inscrição", "Propina", "Pago", "Estado", ""]}
+        cabecalho={[
+          "Nome",
+          "Programa",
+          "Curso",
+          "Polo",
+          "Turma",
+          "Inscrição",
+          "Propina",
+          "Pago",
+          "Estado",
+          "",
+        ]}
       >
         {lista.map((a) => {
           const divida = Number(a.propina) - Number(a.valor_pago);
           return (
             <Linha key={a.id}>
               <td className="px-3 py-3 font-semibold">{a.nome}</td>
+              <td className="px-3 py-3">{nomePrograma(a.programa_id)}</td>
+              <td className="px-3 py-3">
+                {nomeCurso(a.curso_id) || "—"}
+                {a.nivel ? <span className="block text-xs text-muted-foreground">{a.nivel}</span> : null}
+              </td>
               <td className="px-3 py-3">{a.polo}</td>
               <td className="px-3 py-3">{a.turma || "—"}</td>
               <td className="px-3 py-3">{dataCurta(a.data_inscricao)}</td>
