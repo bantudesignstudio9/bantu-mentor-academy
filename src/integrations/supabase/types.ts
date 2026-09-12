@@ -183,6 +183,7 @@ export type Database = {
       }
       financas: {
         Row: {
+          aluno_id: string | null
           categoria: string
           created_at: string
           data: string
@@ -193,6 +194,7 @@ export type Database = {
           valor: number
         }
         Insert: {
+          aluno_id?: string | null
           categoria?: string
           created_at?: string
           data?: string
@@ -203,6 +205,7 @@ export type Database = {
           valor?: number
         }
         Update: {
+          aluno_id?: string | null
           categoria?: string
           created_at?: string
           data?: string
@@ -212,7 +215,15 @@ export type Database = {
           tipo?: string
           valor?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "financas_aluno_id_fkey"
+            columns: ["aluno_id"]
+            isOneToOne: false
+            referencedRelation: "alunos"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       pagamentos: {
         Row: {
@@ -340,7 +351,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      recalcular_valor_pago: { Args: { _aluno: string }; Returns: undefined }
     }
     Enums: {
       [_ in never]: never

@@ -56,20 +56,35 @@ function Financas() {
   const { data: financas = [] } = useFinancas();
   const { data: alunos = [] } = useAlunos();
   const { data: pagamentos = [] } = usePagamentos();
-  const guardar = useGuardar("financas", ["financas"]);
-  const apagar = useApagar("financas", ["financas"]);
+  const guardar = useGuardar("financas", ["financas", "alunos"]);
+  const apagar = useApagar("financas", ["financas", "alunos"]);
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<{
+    data: string;
+    tipo: string;
+    categoria: string;
+    descricao: string;
+    valor: number;
+    aluno_id: string | null;
+  }>({
     data: hoje(),
     tipo: "despesa",
     categoria: "material",
     descricao: "",
     valor: 0,
+    aluno_id: null,
   });
+
+  const ehPropina = form.categoria === "propinas";
+  const alunoSel = alunos.find((a) => a.id === form.aluno_id) ?? null;
+  const totalAluno = Number(alunoSel?.propina ?? 0);
+  const pagoAluno = Number(alunoSel?.valor_pago ?? 0);
+  const faltaAluno = Math.max(totalAluno - pagoAluno, 0);
+  const nomeAluno = (id: string | null) => alunos.find((a) => a.id === id)?.nome ?? null;
 
   const receitasAlunos = alunos.reduce((s, a) => s + Number(a.valor_pago), 0);
   const receitas = financas
-    .filter((f) => f.tipo === "receita")
+    .filter((f) => f.tipo === "receita" && f.categoria !== "propinas")
     .reduce((s, f) => s + Number(f.valor), 0);
   const despesas = financas
     .filter((f) => f.tipo === "despesa")
@@ -91,11 +106,20 @@ function Financas() {
 
   const submeter = (e: React.FormEvent) => {
     e.preventDefault();
+    if (ehPropina && !form.aluno_id) {
+      toast.error("Escolha o aluno da propina");
+      return;
+    }
     guardar.mutate(
-      { ...form, valor: Number(form.valor) || 0 },
+      {
+        ...form,
+        tipo: ehPropina ? "receita" : form.tipo,
+        valor: Number(form.valor) || 0,
+        aluno_id: ehPropina ? form.aluno_id : null,
+      },
       {
         onSuccess: () => {
-          toast.success("Movimento registado");
+          toast.success(ehPropina ? "Propina registada" : "Movimento registado");
           setForm({ ...form, descricao: "", valor: 0 });
         },
         onError: (err: Error) => toast.error(err.message),
@@ -177,7 +201,8 @@ function Financas() {
           </Campo>
           <Campo label="Tipo">
             <NeuSelect
-              value={form.tipo}
+              value={ehPropina ? "receita" : form.tipo}
+              disabled={ehPropina}
               onChange={(e) => setForm({ ...form, tipo: e.target.value })}
             >
               <option value="receita">Receita</option>
@@ -196,6 +221,21 @@ function Financas() {
               ))}
             </NeuSelect>
           </Campo>
+          {ehPropina && (
+            <Campo label="Aluno">
+              <NeuSelect
+                value={String(form.aluno_id ?? "")}
+                onChange={(e) => setForm({ ...form, aluno_id: e.target.value || null })}
+              >
+                <option value="">Escolher aluno…</option>
+                {alunos.map((a) => (
+                  <option key={a.id} value={a.id}>
+                    {a.nome}
+                  </option>
+                ))}
+              </NeuSelect>
+            </Campo>
+          )}
           <Campo label="Descrição">
             <NeuInput
               value={form.descricao}
@@ -215,11 +255,50 @@ function Financas() {
             </NeuButton>
           </div>
         </form>
+
+        {ehPropina && alunoSel ? (
+          <div className="neu-inset mt-4 grid gap-3 rounded-2xl p-4 sm:grid-cols-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Aluno
+              </p>
+              <p className="mt-1 font-semibold">{alunoSel.nome}</p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Propina total
+              </p>
+              <p className="mt-1 font-semibold">{kz(totalAluno)}</p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Já pago
+              </p>
+              <p className="mt-1 font-semibold">{kz(pagoAluno)}</p>
+            </div>
+            <div className="flex flex-col items-start gap-2">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Em falta
+              </p>
+              <Etiqueta tom={faltaAluno > 0 ? "erro" : "ok"}>{kz(faltaAluno)}</Etiqueta>
+              {faltaAluno > 0 ? (
+                <NeuButton
+                  type="button"
+                  className="px-3 py-1.5"
+                  onClick={() => setForm({ ...form, valor: faltaAluno })}
+                >
+                  Usar valor em falta
+                </NeuButton>
+              ) : null}
+            </div>
+          </div>
+        ) : null}
       </NeuCard>
 
-      <Tabela cabecalho={["Data", "Tipo", "Categoria", "Descrição", "Valor", ""]}>
+      <Tabela cabecalho={["Data", "Tipo", "Categoria", "Aluno", "Descrição", "Valor", ""]}>
         {financas.map((f) => (
           <Linha key={f.id}>
+            <td className="px-3 py-3">{nomeAluno(f.aluno_id) ?? "—"}</td>
             <td className="px-3 py-3">{dataCurta(f.data)}</td>
             <td className="px-3 py-3">
               <Etiqueta tom={f.tipo === "receita" ? "ok" : "erro"}>{f.tipo}</Etiqueta>
