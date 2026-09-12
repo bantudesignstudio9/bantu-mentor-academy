@@ -201,7 +201,8 @@ function Financas() {
           </Campo>
           <Campo label="Tipo">
             <NeuSelect
-              value={form.tipo}
+              value={ehPropina ? "receita" : form.tipo}
+              disabled={ehPropina}
               onChange={(e) => setForm({ ...form, tipo: e.target.value })}
             >
               <option value="receita">Receita</option>
