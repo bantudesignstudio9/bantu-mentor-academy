@@ -221,6 +221,21 @@ function Financas() {
               ))}
             </NeuSelect>
           </Campo>
+          {ehPropina && (
+            <Campo label="Aluno">
+              <NeuSelect
+                value={String(form.aluno_id ?? "")}
+                onChange={(e) => setForm({ ...form, aluno_id: e.target.value || null })}
+              >
+                <option value="">Escolher aluno…</option>
+                {alunos.map((a) => (
+                  <option key={a.id} value={a.id}>
+                    {a.nome}
+                  </option>
+                ))}
+              </NeuSelect>
+            </Campo>
+          )}
           <Campo label="Descrição">
             <NeuInput
               value={form.descricao}
