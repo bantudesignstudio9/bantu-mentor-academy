@@ -210,7 +210,7 @@ function Alunos() {
                     propina:
                       curso && Number(curso.propina_padrao) > 0
                         ? Number(curso.propina_padrao)
-                        : form.propina,
+                        : Number(form.propina ?? 0),
                   });
                 }}
               >
