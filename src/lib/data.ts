@@ -75,6 +75,7 @@ export type Financa = {
   categoria: string;
   descricao: string | null;
   valor: number;
+  aluno_id: string | null;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
